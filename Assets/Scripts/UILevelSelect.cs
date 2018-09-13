@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class UILevelSelect : MonoBehaviour
 {
     [SerializeField] private LevelController levelController;
     [SerializeField] private UILevel levelUI;
-    [SerializeField] private GameObject levelPopup;
+    [SerializeField] private LevelPopup levelPopup;
 
     private Transform levelSelectPanel;
     private int currentPage;
-    private List<UILevel> levelList;
+    private List<UILevel> levelList = new List<UILevel>();
 
     private  void Start()
     {
@@ -39,8 +40,9 @@ public class UILevelSelect : MonoBehaviour
             UILevel instance = Instantiate(pageList[i]);
             instance.SetStars(level.Stars);
             instance.transform.SetParent(levelSelectPanel);
+            instance.GetComponent<Button>().onClick.AddListener(() => SelectLevel(level));
 
-            if(!level.Locked)
+            if (!level.Locked)
             {
                 instance.lockImage.SetActive(false);
                 instance.levelIDText.text = level.ID.ToString();
@@ -76,11 +78,10 @@ public class UILevelSelect : MonoBehaviour
         if (level.Locked)
         {
             levelPopup.gameObject.SetActive(true);
-            Debug.Log("levellocked");
+            levelPopup.SetText("<b>Level " + level.ID + " is currently locked.</b>\nComplete level " + (level.ID - 1) + " to unlock");
         }
         else
         {
-            Debug.Log("go to level: " + level.ID);
             levelController.StartLevel(level.LevelName);
         }
     }

@@ -23,7 +23,6 @@ public class UILevel : MonoBehaviour
         for (int i = 0; i < stars; i++)
         {
             this.stars[i].color = Color.white;
-            Debug.Log("White: " + i);
         }
     }
 }
