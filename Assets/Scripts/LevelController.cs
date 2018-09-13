@@ -12,7 +12,7 @@ public class LevelController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         levels = new List<Level>
         {
-            new Level(0, "Introduction", false, 0, false),
+            new Level(0, "Introduction", true, 3, false),
             new Level(1, "Getting Goin", false, 0, true),
             new Level(2, "Level Name", false, 0, true),
             new Level(3, "Level Name", false, 0, true),
