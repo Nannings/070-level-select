@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UILevelSelect : MonoBehaviour
 {
-    [SerializeField] private LevelController levelController;
+    private LevelController levelController;
     [SerializeField] private UILevel levelUI;
     [SerializeField] private LevelPopup levelPopup;
 
@@ -16,6 +16,8 @@ public class UILevelSelect : MonoBehaviour
 
     private  void Start()
     {
+        levelController = FindObjectOfType<LevelController>();
+
         levelSelectPanel = transform;
 
         for (int i = 0; i < levelController.levels.Count; i++)
