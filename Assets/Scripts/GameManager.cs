@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             levelController.CompleteLevel(SceneManager.GetActiveScene().name, Random.Range(1, 4));
+            levelController.UnLockNextLevelOfCurrentScene(SceneManager.GetActiveScene().name);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -40,9 +41,9 @@ public class GameManager : MonoBehaviour
             levelController.DebugLevelList();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            levelController.UnLockNextLevelOfCurrentScene(SceneManager.GetActiveScene().name);
+            levelController.SaveGame();
         }
     }
 }
