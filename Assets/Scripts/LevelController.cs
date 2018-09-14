@@ -7,8 +7,6 @@ public class LevelController : MonoBehaviour
 {
     public List<Level> levels;
 
-    private SaveManager saveManager = new SaveManager();
-
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -66,15 +64,14 @@ public class LevelController : MonoBehaviour
 
     public void SaveGame()
     {
-        SaveState data = new SaveState();
-        data.levels = levels;
-        saveManager.Save(data);
+        SaveManager.saveState.levels = levels;
+        SaveManager.Save();
     }
 
     public void LoadGame()
     {
-        SaveState save = saveManager.Load();
-        if(save == null)
+        SaveManager.Load();
+        if(SaveManager.saveState.levels.Count <= 0)
         {
             levels = new List<Level>
             {
@@ -93,10 +90,12 @@ public class LevelController : MonoBehaviour
                 new Level(13, "Level_013", false, 0, true),
                 new Level(14, "Level_014", false, 0, true),
             };
+
+            SaveGame();
         }
         else
         {
-            levels = save.levels;
+            levels = SaveManager.saveState.levels;
         }
     }
 }

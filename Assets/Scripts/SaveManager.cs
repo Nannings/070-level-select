@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class SaveManager
 {
-    private string fileName = "_level_data.dat";
+    public static SaveState saveState;
 
-    private SaveMethod saveMethod = SaveMethod.Json_PlayerPrefs;
+    private static string fileName = "_level_data.dat";
+    private static SaveMethod saveMethod = SaveMethod.Json_PlayerPrefs;
 
     enum SaveMethod
     {
@@ -17,8 +18,10 @@ public class SaveManager
         Json_PlayerPrefs
     }
 
-    public void Save(SaveState data)
+    public static void Save()
     {
+        SaveState data = saveState;
+
         string path = Application.persistentDataPath + "/" + saveMethod.ToString() + fileName;
 
         if (saveMethod == SaveMethod.Binary)
@@ -41,42 +44,31 @@ public class SaveManager
         }
     }
 
-    public SaveState Load()
+    public static void Load()
     {
         string path = Application.persistentDataPath + "/" + saveMethod.ToString() + fileName;
 
-        if (saveMethod == SaveMethod.Binary)
+        if (saveMethod == SaveMethod.Binary && File.Exists(path))
         {
-            bool fileExist = File.Exists(path);
-            if (!fileExist) return null;
-
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(path, FileMode.Open);
             SaveState levelData = (SaveState)bf.Deserialize(file);
             file.Close();
-            return levelData;
+            saveState = levelData;
         }
-        else if (saveMethod == SaveMethod.Json)
+        else if (saveMethod == SaveMethod.Json && File.Exists(path))
         {
-            bool fileExist = File.Exists(path);
-            if (!fileExist) return null;
-
             string serializedData = File.ReadAllText(path);
-            return JsonUtility.FromJson<SaveState>(serializedData);
+            saveState = JsonUtility.FromJson<SaveState>(serializedData);
         }
-        else if (saveMethod == SaveMethod.Json_PlayerPrefs)
+        else if (saveMethod == SaveMethod.Json_PlayerPrefs && PlayerPrefs.HasKey(fileName))
         {
-            if (!PlayerPrefs.HasKey(fileName))
-            {
-                Debug.Log(12);
-                return null;
-            }
             string serializedData = PlayerPrefs.GetString(fileName);
-            return JsonUtility.FromJson<SaveState>(serializedData);
+            saveState = JsonUtility.FromJson<SaveState>(serializedData);
         }
         else
         {
-            return null;
+            saveState = new SaveState();
         }
     }
 
