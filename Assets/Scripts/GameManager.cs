@@ -45,5 +45,10 @@ public class GameManager : MonoBehaviour
         {
             levelController.SaveGame();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            SaveManager.DeleteSaveGame();
+        }
     }
 }

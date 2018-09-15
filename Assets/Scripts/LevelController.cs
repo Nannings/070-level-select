@@ -73,23 +73,13 @@ public class LevelController : MonoBehaviour
         SaveManager.Load();
         if(SaveManager.saveState.levels.Count <= 0)
         {
-            levels = new List<Level>
+            levels = new List<Level>();
+            for (int i = 0; i < 50; i++)
             {
-                new Level(0, "Level_001", false, 0, false),
-                new Level(1, "Level_002", false, 0, false),
-                new Level(2, "Level_003", false, 0, true),
-                new Level(3, "Level_004", false, 0, true),
-                new Level(4, "Level_005", false, 0, true),
-                new Level(5, "Level_006", false, 0, true),
-                new Level(6, "Level_007", false, 0, true),
-                new Level(7, "Level_008", false, 0, true),
-                new Level(8, "Level_009", false, 0, true),
-                new Level(9, "Level_010", false, 0, true),
-                new Level(10, "Level_011", false, 0, true),
-                new Level(12, "Level_012", false, 0, true),
-                new Level(13, "Level_013", false, 0, true),
-                new Level(14, "Level_014", false, 0, true),
-            };
+                levels.Add(new Level(i + 1, "Level_" + (i + 1), false, 0, true));
+            }
+
+            levels[0].UnLock();
 
             SaveGame();
         }

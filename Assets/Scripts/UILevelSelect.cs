@@ -6,17 +6,22 @@ using UnityEngine.UI;
 
 public class UILevelSelect : MonoBehaviour
 {
-    private LevelController levelController;
     [SerializeField] private UILevel levelUI;
-    [SerializeField] private LevelPopup levelPopup;
 
+    private GameObject left, right;
+    private LevelController levelController;
+    private LevelPopup levelPopup;
     private Transform levelSelectPanel;
     private int currentPage;
     private List<UILevel> levelList = new List<UILevel>();
+    private int pageSize = 12;
 
     private  void Start()
     {
         levelController = FindObjectOfType<LevelController>();
+        levelPopup = FindObjectOfType<LevelPopup>();
+        left = GameObject.Find("Left");
+        right = GameObject.Find("Right");
 
         levelSelectPanel = transform;
 
@@ -33,7 +38,6 @@ public class UILevelSelect : MonoBehaviour
         RemoveItemsFromPage();
 
         currentPage = page;
-        int pageSize = 12;
         List<UILevel> pageList = levelList.Skip(page * pageSize).Take(pageSize).ToList();
 
         for (int i = 0; i < pageList.Count; i++)
@@ -67,12 +71,22 @@ public class UILevelSelect : MonoBehaviour
 
     public void NextPage()
     {
-        BuildLevelPage(currentPage + 1);
+        int cur = currentPage + 1;
+        if ((cur * pageSize) > levelList.Count)
+        {
+            cur = 0;
+        }
+        BuildLevelPage(cur);
     }
 
     public void PreviousPage()
     {
-        BuildLevelPage(currentPage - 1);
+        int cur = currentPage - 1;
+        if (cur < 0)
+        {
+            cur = (levelList.Count / pageSize);
+        }
+        BuildLevelPage(cur);
     }
 
     private void SelectLevel(Level level)

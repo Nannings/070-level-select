@@ -72,19 +72,26 @@ public class SaveManager
         }
     }
 
-    public void DeleteFile()
+    public static void DeleteSaveGame()
     {
-        string path = Application.persistentDataPath + "/" + saveMethod.ToString() + fileName;
-
-        bool fileExist = File.Exists(path);
-        if (fileExist)
+        if (saveMethod == SaveMethod.Json_PlayerPrefs)
         {
-            File.Delete(path);
-            Debug.Log("file deleted");
+            PlayerPrefs.DeleteKey(fileName);
         }
         else
         {
-            Debug.Log("no file found");
+            string path = Application.persistentDataPath + "/" + saveMethod.ToString() + fileName;
+
+            bool fileExist = File.Exists(path);
+            if (fileExist)
+            {
+                File.Delete(path);
+                Debug.Log("file deleted");
+            }
+            else
+            {
+                Debug.Log("no file found");
+            }
         }
     }
 }
